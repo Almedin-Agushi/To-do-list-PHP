@@ -53,13 +53,14 @@
                     <?php if($tod['checked']){ ?>
 
                         <input type="checkbox"
-                        
                             class="check-box"
+                            data-todo-id ="<?php echo $tod['id']; ?>"
                             checked />
+                            
                         <h2 class="checked"><?php echo $tod['title'] ?></h2> 
                     <?php }else {?>
                         <input type="checkbox"
-                        
+                            data-todo-id ="<?php echo $tod['id']; ?>"
                             class="check-box"/>
                         <h2><?php echo $tod['title'] ?></h2> 
                         <?php }?>
@@ -93,7 +94,25 @@
             });
 
                 $(".check-box").click(function(e){
-                    const id = $(this).attr('id');
+                    const id = $(this).attr('data-todo-id');
+                    $.post('app/check.php',
+
+                    {
+                        id : id
+                    },
+                    (data) =>{
+                        if(data != 'error'){
+                            const h2 = $(this).next();
+                            if(data === '1'){
+                                h2.removeClass('checked')
+
+                            }else{
+                                h2.addClass('checked')
+                            }
+                        }
+                    }
+
+                    )
                 });
         });
 
